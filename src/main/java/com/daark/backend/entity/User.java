@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -36,4 +38,16 @@ public class User implements Serializable {
     @Column(nullable = false)
     private boolean emailVerified = false;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Annonce> annonces = new ArrayList<>();
+
+    public void addAnnonce(Annonce annonce) {
+        annonces.add(annonce);
+        annonce.setUser(this);
+    }
+
+    public void removeAnnonce(Annonce annonce) {
+        annonces.remove(annonce);
+        annonce.setUser(null);
+    }
 }
