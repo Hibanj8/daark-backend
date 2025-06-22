@@ -19,18 +19,17 @@ public class EmailService {
 
     public void sendVerificationEmail(User user) {
         String token = jwtUtils.generateVerificationToken(user.getEmail());
-        String link = "http://localhost:8080/api/auth/verify?token=" + token;
-
+        String frontendUrl = "http://localhost:5173/confirm-email?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(senderEmail);
         message.setTo(user.getEmail());
         message.setSubject("Vérification d'email");
-        message.setText("Cliquez sur ce lien pour vérifier votre email :\n" + link);
+        message.setText("Cliquez sur ce lien pour vérifier votre email :\n" + frontendUrl);
 
         mailSender.send(message);
     }
     public void sendResetPasswordEmail(User user, String token) {
-        String link = "http://localhost:3000/reset-password?token=" + token;
+        String link = "http://localhost:5173/reset-password?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(senderEmail);
         message.setTo(user.getEmail());
