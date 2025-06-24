@@ -145,5 +145,17 @@ public class AnnonceService {
         List<Annonce> annonces = annonceRepository.searchByFilters(ville, typeLocation, typeLogement, minPrix, maxPrix);
         return annonces.stream().map(this::mapToResponse).toList();
     }
+    @Transactional(readOnly = true)
+    public AnnonceResponse getAnnonceById(Long id) {
+        Annonce annonce = annonceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Annonce introuvable"));
+        return mapToResponse(annonce);
+    }
+    public void deleteAllAnnoncesForUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+        List<Annonce> annonces = annonceRepository.findByUser(user);
+        annonceRepository.deleteAll(annonces);
+    }
+
 }
 
