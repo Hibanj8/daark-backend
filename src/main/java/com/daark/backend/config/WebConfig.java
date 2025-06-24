@@ -17,7 +17,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/"); // correspond à ton dossier uploads dans le projet
+                .addResourceLocations("file:///C:/Users/ISMAIL ELHANI/Downloads/backend/backend/uploads/");
     }
+
+
+
 
 }

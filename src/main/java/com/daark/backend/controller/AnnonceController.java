@@ -85,4 +85,21 @@ public class AnnonceController {
         List<AnnonceResponse> annonces = annonceService.getFilteredAnnonces(ville, typeLocation, typeLogement, minPrix, maxPrix);
         return ResponseEntity.ok(annonces);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getAnnonceById(@PathVariable Long id) {
+        try {
+            AnnonceResponse response = annonceService.getAnnonceById(id);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(404).body("Annonce non trouvée.");
+        }
+    }
+    @DeleteMapping("/all")
+    public ResponseEntity<String> deleteAllUserAnnonces(Authentication authentication) {
+        String email = authentication.getName();
+        annonceService.deleteAllAnnoncesForUser(email);
+        return ResponseEntity.ok("Toutes les annonces ont été supprimées.");
+    }
+
+
 }
