@@ -4,3 +4,4 @@ public enum StatutAnnonce {
     EN_ATTENTE,
     ACCEPTEE,
     REFUSEE
+}
