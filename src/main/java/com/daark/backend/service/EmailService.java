@@ -19,7 +19,7 @@ public class EmailService {
 
     public void sendVerificationEmail(User user) {
         String token = jwtUtils.generateVerificationToken(user.getEmail());
-        String frontendUrl = "http://localhost:5173/confirm-email?token=" + token;
+        String frontendUrl = "http://localhost:5175/confirm-email?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(senderEmail);
         message.setTo(user.getEmail());
@@ -29,7 +29,7 @@ public class EmailService {
         mailSender.send(message);
     }
     public void sendResetPasswordEmail(User user, String token) {
-        String link = "http://localhost:5173/reset-password?token=" + token;
+        String link = "http://localhost:5175/reset-password?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(senderEmail);
         message.setTo(user.getEmail());

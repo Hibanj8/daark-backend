@@ -1,4 +1,6 @@
 package com.daark.backend.entity;
 
-public class StatutAnnonce {
-}
+public enum StatutAnnonce {
+    EN_ATTENTE,
+    ACCEPTEE,
+    REFUSEE

@@ -40,6 +40,13 @@ public class AnnonceController {
         return ResponseEntity.ok(annonces);
     }
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/all")
+    public ResponseEntity<List<AnnonceResponse>> getAllAnnoncesAdmin() {
+        List<AnnonceResponse> annonces = annonceService.getAllAnnoncesAdmin();
+        return ResponseEntity.ok(annonces);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/en-attente")
     public ResponseEntity<List<AnnonceResponse>> getAnnoncesEnAttenteAdmin() {
         List<AnnonceResponse> annonces = annonceService.getAllAnnoncesEnAttente();

@@ -3,6 +3,8 @@ package com.daark.backend.service;
 import com.daark.backend.dto.AnnonceRequest;
 import com.daark.backend.dto.AnnonceResponse;
 import com.daark.backend.entity.Annonce;
+import com.daark.backend.entity.Role;
+import com.daark.backend.entity.StatutAnnonce;
 import com.daark.backend.entity.User;
 import com.daark.backend.repository.AnnonceRepository;
 import com.daark.backend.repository.UserRepository;
@@ -66,7 +68,7 @@ public class AnnonceService {
                 .animaux(request.getAnimaux())
                 .caution(request.getCaution())
                 .photos(imageUrls)
-                .statut(Annonce.StatutAnnonce.EN_ATTENTE)
+                .statut(StatutAnnonce.EN_ATTENTE)
                 .user(user)
                 .build();
 
@@ -77,11 +79,12 @@ public class AnnonceService {
         User user = userRepository.findByEmail(email).orElseThrow();
         List<Annonce> annonces;
 
-        if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+        if (user.getRole() == Role.ADMIN) {
             annonces = annonceRepository.findAll();
         } else {
             annonces = annonceRepository.findByUser(user);
         }
+
 
         return annonces.stream().map(this::mapToResponse).toList();
     }
@@ -106,9 +109,16 @@ public class AnnonceService {
         response.setCaution(annonce.getCaution());
         response.setPhotos(new ArrayList<>(annonce.getPhotos()));
         response.setStatut(annonce.getStatut());
+        User user = annonce.getUser();
+        if (user != null) {
+            response.setUserId(user.getId());
+            response.setUsername(user.getUsername());
+            response.setEmail(user.getEmail());
+            response.setTelephone(user.getTelephone());
+        }
         return response;
     }
-    public void updateStatutAnnonce(Long annonceId, Annonce.StatutAnnonce nouveauStatut) {
+    public void updateStatutAnnonce(Long annonceId, StatutAnnonce nouveauStatut) {
         Annonce annonce = annonceRepository.findById(annonceId)
                 .orElseThrow(() -> new IllegalArgumentException("Annonce introuvable"));
         annonce.setStatut(nouveauStatut);
@@ -118,7 +128,7 @@ public class AnnonceService {
         User user = userRepository.findByEmail(email).orElseThrow();
         Annonce annonce = annonceRepository.findById(annonceId)
                 .orElseThrow(() -> new IllegalArgumentException("Annonce introuvable."));
-        if (!"ADMIN".equalsIgnoreCase(user.getRole()) && !annonce.getUser().getId().equals(user.getId())) {
+        if (user.getRole() != Role.ADMIN && !annonce.getUser().getId().equals(user.getId())) {
             throw new SecurityException("Vous n’avez pas le droit de supprimer cette annonce.");
         }
 
@@ -132,12 +142,19 @@ public class AnnonceService {
     }
     @Transactional(readOnly = true)
     public List<AnnonceResponse> getAllAnnonces() {
-        List<Annonce> annonces = annonceRepository.findByStatut(Annonce.StatutAnnonce.ACCEPTEE); // ou filtre par statut
+        List<Annonce> annonces = annonceRepository.findByStatut(StatutAnnonce.ACCEPTEE);
         return annonces.stream().map(this::mapToResponse).toList();
     }
     @Transactional(readOnly = true)
+    public List<AnnonceResponse> getAllAnnoncesAdmin() {
+        List<Annonce> annonces = annonceRepository.findAll();
+        return annonces.stream().map(this::mapToResponse).toList();
+
+    }
+
+    @Transactional(readOnly = true)
     public List<AnnonceResponse> getAllAnnoncesEnAttente() {
-        List<Annonce> annonces = annonceRepository.findByStatut(Annonce.StatutAnnonce.EN_ATTENTE);
+        List<Annonce> annonces = annonceRepository.findByStatut(StatutAnnonce.EN_ATTENTE);
         return annonces.stream().map(this::mapToResponse).toList();
     }
     @Transactional(readOnly = true)
