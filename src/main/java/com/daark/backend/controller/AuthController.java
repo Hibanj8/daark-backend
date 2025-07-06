@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.daark.backend.dto.GoogleAuthRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.daark.backend.service.GoogleService;
 import com.daark.backend.entity.User;
 import org.springframework.http.HttpStatus;
@@ -61,7 +60,7 @@ public class AuthController {
     @PostMapping("/google")
     public ResponseEntity<?> googleAuth(@RequestBody GoogleAuthRequest request) {
         String token = request.getToken();
-        String type = request.getType(); // "login" ou "signup"
+        String type = request.getType();
 
         GoogleIdToken.Payload payload = googleService.verifyToken(token);
         if (payload == null) {
@@ -76,11 +75,10 @@ public class AuthController {
         }
 
         User user = userOpt.orElseGet(() -> {
-            // créer compte si 'signup'
             User newUser = new User();
             newUser.setEmail(email);
             newUser.setUsername((String) payload.get("name"));
-            newUser.setPassword(UUID.randomUUID().toString()); // faux mot de passe car login via Google
+            newUser.setPassword(UUID.randomUUID().toString());
             return userRepository.save(newUser);
         });
 
