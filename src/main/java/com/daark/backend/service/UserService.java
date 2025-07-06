@@ -28,9 +28,9 @@ public class UserService {
         userRepository.delete(user);
     }
     public List<UserDTO> getAllUsers() {
-        return userRepository.findByRole(Role.CLIENT)  // Utilise enum Role si possible
+        return userRepository.findByRole(Role.CLIENT)
                 .stream()
-                .map(UserMapper::toDTO) // Adapter le mapper pour accepter User directement
+                .map(UserMapper::toDTO)
                 .toList();
     }
 

@@ -2,7 +2,6 @@ package com.daark.backend.controller;
 
 import com.daark.backend.dto.UserDTO;
 import com.daark.backend.dto.UpdateTelephoneRequest;
-import com.daark.backend.entity.User;
 import com.daark.backend.service.UserService;
 import com.daark.backend.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -56,7 +55,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        userRepository.deleteById(userId); // Suppression en cascade si bien configurée
+        userRepository.deleteById(userId);
         return ResponseEntity.ok("Utilisateur et ses annonces supprimés avec succès.");
     }
 

@@ -1,5 +1,4 @@
 package com.daark.backend.dto;
-import com.daark.backend.entity.Annonce;
 import com.daark.backend.entity.StatutAnnonce;
 import lombok.Data;
 import java.util.List;
