@@ -3,7 +3,7 @@ package com.daark.backend.repository;
 import com.daark.backend.entity.Annonce;
 import com.daark.backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.daark.backend.entity.Annonce.StatutAnnonce;
+import com.daark.backend.entity.StatutAnnonce;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 

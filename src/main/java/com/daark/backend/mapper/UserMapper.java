@@ -1,30 +1,30 @@
 package com.daark.backend.mapper;
 
-import com.daark.backend.bo.UserBO;
 import com.daark.backend.dto.UserDTO;
+import com.daark.backend.entity.Role;
 import com.daark.backend.entity.User;
 
 public class UserMapper {
 
-    public static UserBO toBO(User user) {
-        return new UserBO(user);
-    }
+    public static UserDTO toDTO(User user) {
+        if (user == null) return null;
 
-    public static UserDTO toDTO(UserBO bo) {
         UserDTO dto = new UserDTO();
-        dto.setId(bo.getId());
-        dto.setUsername(bo.getUsername());
-        dto.setEmail(bo.getEmail());
-        dto.setTelephone(bo.getTelephone());
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setTelephone(user.getTelephone());
         return dto;
     }
 
-    public static UserBO toBO(UserDTO dto) {
-        UserBO bo = new UserBO();
-        bo.setId(dto.getId());
-        bo.setUsername(dto.getUsername());
-        bo.setEmail(dto.getEmail());
-        bo.setTelephone(dto.getTelephone());
-        return bo;
+    public static User toEntity(UserDTO dto) {
+        if (dto == null) return null;
+
+        User user = new User();
+        user.setId(dto.getId());
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setTelephone(dto.getTelephone());
+        return user;
     }
 }

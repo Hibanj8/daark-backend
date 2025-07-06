@@ -3,6 +3,7 @@ package com.daark.backend.service;
 
 import com.daark.backend.config.JwtUtils;
 import com.daark.backend.dto.*;
+import com.daark.backend.entity.Role;
 import com.daark.backend.entity.User;
 import com.daark.backend.exception.*;
 import com.daark.backend.repository.UserRepository;
@@ -41,7 +42,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .telephone(request.getTelephone())
-                .role(request.getRole() != null ? request.getRole() : "CLIENT")
+                .role(request.getRole() != null ? Role.valueOf(request.getRole().name()) : Role.CLIENT)
                 .emailVerified(false)
                 .build();
 
@@ -65,8 +66,9 @@ public class AuthService {
                     )
             );
 
-            String token = jwtUtils.generateToken(user.getEmail());
-            return new AuthResponse(token);
+            String token = jwtUtils.generateToken(user.getEmail(), user.getRole().name());
+            return new AuthResponse(token, user.getRole());
+
 
         } catch (Exception e) {
             throw new BadCredentialsException();

@@ -1,7 +1,7 @@
 package com.daark.backend.service;
 
-import com.daark.backend.bo.UserBO;
 import com.daark.backend.dto.UserDTO;
+import com.daark.backend.entity.Role;
 import com.daark.backend.entity.User;
 import com.daark.backend.exception.UserNotFoundException;
 import com.daark.backend.mapper.UserMapper;
@@ -19,8 +19,7 @@ public class UserService {
     public UserDTO getUser(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable"));
-        UserBO bo = new UserBO(user);
-        return UserMapper.toDTO(bo);
+        return UserMapper.toDTO(user);
     }
 
     public void deleteAccount(String email) {
@@ -29,12 +28,12 @@ public class UserService {
         userRepository.delete(user);
     }
     public List<UserDTO> getAllUsers() {
-        return userRepository.findAll()
+        return userRepository.findByRole(Role.CLIENT)  // Utilise enum Role si possible
                 .stream()
-                .map(UserBO::new)
-                .map(UserMapper::toDTO)
+                .map(UserMapper::toDTO) // Adapter le mapper pour accepter User directement
                 .toList();
     }
+
     public void updateTelephone(String email, String telephone) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable"));

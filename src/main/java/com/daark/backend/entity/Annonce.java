@@ -53,10 +53,6 @@ public class Annonce {
         this.photos.add(photoUrl);
     }
 
-    public enum StatutAnnonce {
-        EN_ATTENTE,
-        ACCEPTEE,
-        REFUSEE
-    }
+
 
 }

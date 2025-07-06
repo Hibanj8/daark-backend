@@ -28,9 +28,10 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Builder.Default
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role = "CLIENT";
+    @Builder.Default
+    private Role role = Role.CLIENT;
 
     private String telephone;
 

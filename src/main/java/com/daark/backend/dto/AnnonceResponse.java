@@ -1,5 +1,6 @@
 package com.daark.backend.dto;
 import com.daark.backend.entity.Annonce;
+import com.daark.backend.entity.StatutAnnonce;
 import lombok.Data;
 import java.util.List;
 
@@ -22,6 +23,11 @@ public class AnnonceResponse {
     private Boolean animaux;
     private Boolean caution;
     private List<String> photos;
-    private Annonce.StatutAnnonce statut;
+    private StatutAnnonce statut;
+    private Long userId;
+    private String username;
+    private String email;
+    private String telephone;
+
 }
 
